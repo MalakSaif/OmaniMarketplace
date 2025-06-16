@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Checkout - Omani Marketplace{% endblock %}
+
+{% block content %}
+<div class="checkout-container">
+    <h1 class="checkout-title">Checkout</h1>
+
+    {% if cart_items %}
+        <ul class="checkout-list">
+            {% for item in cart_items %}
+                <li>
+                    {{ item.product.name }} - {{ item.quantity }} × {{ item.product.price }} OMR =
+                    <strong>{{ item.subtotal }} OMR</strong>
+                </li>
+                <br>
+                <p><strong> =Only Cash On Delivery Available= </strong> </p>
+            {% endfor %}
+        </ul>
+        <p class="checkout-total">Total: {{ total }} OMR</p>
+
+        <form method="post" class="place-order-form">
+            {% csrf_token %}
+            <label for="phone_number" class="phone-label">Phone Number:</label>
+            <input type="text" id="phone_number" name="phone_number" placeholder="Enter your phone number"
+                   class="input-field" required>
+            <button type="submit" class="btn-primary">Place Order</button>
+        </form>
+    {% else %}
+        <p class="empty-cart-message">
+            Your cart is empty. <a href="{% url 'index' %}">Go back to shop</a>
+        </p>
+    {% endif %}
+</div>
+{% endblock %}

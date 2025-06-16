@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Your Dashboard - Omani Marketplace{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <h1 class="dashboard-title">Welcome, {{ request.user.username }}</h1>
+
+    <div class="dashboard-actions">
+        <a class="dashboard-link" href="{% url 'update_profile' %}">Update Your Profile</a>
+    </div>
+
+    <h2 class="orders-title">Your Orders</h2>
+
+    {% if orders %}
+        <ul class="order-list">
+            {% for order in orders %}
+                <li class="order-item">
+                    <strong>Order #{{ order.id }}</strong> – {{ order.created_at|date:"Y-m-d H:i" }}<br>
+                    <span class="order-phone">Phone: {{ order.phone_number }}</span>
+
+                    <ul class="order-products">
+                        {% for item in order.items.all %}
+                            <li>
+                                {{ item.product.name }} – {{ item.product.price }} OMR × {{ item.quantity }} =
+                                {{ item.product.price|floatformat:2|add:"0"|floatformat:2|floatformat:2 }} OMR
+                            </li>
+                        {% endfor %}
+                    </ul>
+
+                    <strong>Total:</strong> {{ order.total_price|floatformat:2 }} OMR
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="no-orders">You haven't made any orders yet.</p>
+    {% endif %}
+
+    <a class="home-return-link" href="{% url 'home' %}">Back to Home</a>
+</div>
+{% endblock %}

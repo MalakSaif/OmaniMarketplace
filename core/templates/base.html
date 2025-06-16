@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Omani Marketplace{% endblock %}</title>
+
+    <!-- Font + CSS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1><a href="{% url 'home' %}">Omani Marketplace</a></h1>
+            <nav>
+                <ul>
+                    <li><a href="{% url 'about' %}">About</a></li>
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'dashboard' %}">User Dashboard</a></li>
+                        {% if user.is_superuser or user.is_staff or user.brandowner %}
+                            <li><a href="{% url 'brand_dashboard' %}">Brand Dashboard</a></li>
+                        {% endif %}
+                    {% else %}
+                        <li><a href="{% url 'login' %}">Login</a></li>
+                        <li><a href="{% url 'register' %}">Register</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% if user.is_authenticated %}
+                <!-- Logout Button Below Nav Links and Centered -->
+                <div class="logout-btn-container">
+                    <form method="POST" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="logout-btn">Logout</button>
+                    </form>
+                </div>
+            {% endif %}
+        </div>
+    </header>
+
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; {{ now|date:"Y" }} Omani Marketplace. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
+

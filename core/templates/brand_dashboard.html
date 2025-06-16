@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ brand.name }} Dashboard - Omani Marketplace{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <h1>{{ brand.name }} - Brand Dashboard</h1>
+    <p>Welcome, {{ request.user.username }}!</p>
+    
+    <a href="{% url 'add_product' %}" class="btn-primary">➕ Add New Product</a>
+
+    <h2>Your Products</h2>
+    <div class="product-list">
+        {% for product in products %}
+            <div class="product-card">
+                <p><strong>{{ product.name }}</strong></p>
+                <p>{{ product.price }} OMR</p>
+                <a href="{% url 'edit_product' product.id %}" class="btn-secondary">✏️ Edit</a>
+                <a href="{% url 'delete_product' product.id %}" class="btn-danger">🗑 Delete</a>
+            </div>
+        {% empty %}
+            <p>No products yet.</p>
+        {% endfor %}
+    </div>
+
+    <h2>Filter Orders by Date</h2>
+    <form method="get" class="filter-form">
+        <input type="date" name="start_date" value="{{ start_date }}" placeholder="From" />
+        <input type="date" name="end_date" value="{{ end_date }}" placeholder="To" />
+        <button type="submit" class="btn-primary">Filter</button>
+    </form>
+
+    <h2>Orders for Your Products</h2>
+    {% if order_items %}
+        <div class="order-list">
+            {% for item in order_items %}
+                <div class="order-card">
+                    <p><strong>{{ item.product.name }}</strong></p>
+                    <p>Quantity: {{ item.quantity }}</p>
+                    <p>Ordered by: {{ item.order.user.username }}</p>
+                    <p>Phone: {{ item.order.phone_number }}</p>
+                    <p>Order Date: {{ item.order.created_at|date:"Y-m-d H:i" }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No orders yet for your products.</p>
+    {% endif %}
+
+    <h2>Contact Messages</h2>
+    {% if contact_messages %}
+        <div class="message-list">
+            {% for message in contact_messages %}
+                <div class="message-card">
+                    <p><strong>{% if message.user %}{{ message.user.username }}{% else %}Anonymous{% endif %}</strong></p>
+                    <p>{{ message.created_at|date:"Y-m-d H:i" }}</p>
+                    <p>{{ message.message }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No contact messages yet.</p>
+    {% endif %}
+
+    <a href="/" class="btn-secondary">🏠 Back to Home</a>
+</div>
+{% endblock %}

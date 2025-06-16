@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="brand-profile-container">
+    <h1>{{ brand.name }}</h1>
+    <img src="{{ brand.logo.url }}" alt="{{ brand.name }} Logo">
+
+    <p>{{ brand.description }}</p>
+    <p><a href="{{ brand.instagram_url }}" target="_blank">Follow on Instagram</a></p>
+
+    <!-- Search Form -->
+    <form method="GET">
+        <input type="text" name="q" placeholder="Search Products..." value="{{ query }}">
+        <button type="submit">Search</button>
+    </form>
+
+    <h2>Products from {{ brand.name }}</h2>
+    <ul class="product-grid">
+        {% for product in products %}
+        <li>
+            <h3>{{ product.name }}</h3>
+            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            <p>{{ product.price }} OMR</p>
+            <a href="{% url 'product_detail' product.id %}">View Details</a>
+        </li>
+        {% empty %}
+        <li>No products found.</li>
+        {% endfor %}
+    </ul>
+
+    <!-- Contact Form -->
+    <h2>Contact This Brand</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Send Message</button>
+    </form>
+
+    {% if success_message %}
+    <p class="success-message">{{ success_message }}</p>
+    {% endif %}
+
+    <a href="/" class="back-home">Back to Home</a>
+</div>
+{% endblock %}

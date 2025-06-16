@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="brand-orders-container">
+    <h1 class="orders-heading">My Product Orders</h1>
+
+    {% if order_items %}
+        <div class="orders-grid">
+            {% for item in order_items %}
+                <div class="order-card">
+                    <h3 class="product-name">{{ item.product.name }}</h3>
+                    <p><strong>Quantity:</strong> {{ item.quantity }}</p>
+                    <p><strong>Ordered by:</strong> {{ item.order.user.username }}</p>
+                    <p><strong>Order Date:</strong> {{ item.order.created_at|date:"Y-m-d H:i" }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="no-orders-msg">No orders yet for your products.</p>
+    {% endif %}
+</div>
+{% endblock %}

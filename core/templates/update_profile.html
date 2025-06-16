@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Update Profile - Omani Marketplace{% endblock %}
+
+{% block content %}
+<div class="update-profile-container">
+    <h1 class="update-profile-title">Update Your Profile</h1>
+
+    <form method="POST" class="update-profile-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn-primary">Update Profile</button>
+    </form>
+
+    <a class="dashboard-return-link" href="{% url 'dashboard' %}">← Back to Dashboard</a>
+</div>
+{% endblock %}

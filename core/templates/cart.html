@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Your Cart - Omani Marketplace{% endblock %}
+
+{% block content %}
+<div class="cart-container">
+    <h1 class="cart-title">Your Cart</h1>
+
+    {% if cart_items %}
+        {% for item in cart_items %}
+            <div class="cart-item">
+                <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                <div class="item-details">
+                    <strong>{{ item.product.name }}</strong>
+                    <p>{{ item.product.price }} OMR × {{ item.quantity }} = {{ item.item_total }} OMR</p>
+                </div>
+                <div class="cart-actions">
+                    <form action="{% url 'update_cart' product_id=item.product.id %}" method="POST">
+                        {% csrf_token %}
+                        <input type="number" name="quantity" value="{{ item.quantity }}" min="1" />
+                        <button type="submit">Update</button>
+                    </form>
+                    <a href="{% url 'remove_from_cart' product_id=item.product.id %}" class="remove-btn">Remove</a>
+                </div>
+            </div>
+        {% endfor %}
+
+        <p class="cart-total"><strong>Total:</strong> {{ total_price }} OMR</p>
+        <a href="{% url 'checkout' %}" class="checkout-btn">Proceed to Checkout</a>
+    {% else %}
+        <p style="text-align:center;">Your cart is empty.</p>
+    {% endif %}
+</div>
+{% endblock %}

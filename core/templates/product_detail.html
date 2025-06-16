@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ product.name }} - Omani Marketplace{% endblock %}
+
+{% block content %}
+<div class="product-detail-container">
+    <h1 class="product-title">{{ product.name }}</h1>
+    
+    <div class="product-detail-content">
+        <img class="product-image" src="{{ product.image.url }}" alt="{{ product.name }}">
+
+        <div class="product-info">
+            <p><strong>Price:</strong> {{ product.price }} OMR</p>
+            <p><strong>Description:</strong> {{ product.description }}</p>
+
+            <form method="POST" class="add-to-cart-form">
+                {% csrf_token %}
+                <button type="submit" class="btn-primary">Add to Cart</button>
+            </form>
+
+            <a href="{% url 'brand_profile' product.brand.id %}" class="brand-link">
+                View More Products from {{ product.brand.name }}
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

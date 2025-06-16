@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}About Us - Omani Marketplace{% endblock %}
+
+{% block content %}
+    <div class="about-section">
+        <h2>About Omani Marketplace</h2>
+        <p>
+            Omani Marketplace is a platform that supports and promotes local Omani brands.
+            Our mission is to provide an easy-to-use online space where entrepreneurs can 
+            showcase their products, and customers can discover and support homegrown talent.
+        </p>
+        <p>
+            We highlight key shopping categories including fashion, beauty, accessories, and food — 
+            all created by talented Omani sellers.
+        </p>
+        <a href="{% url 'home' %}" class="back-link">← Back to Home</a>
+    </div>
+{% endblock %}
